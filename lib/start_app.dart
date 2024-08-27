@@ -29,7 +29,7 @@ class StartApp extends StatelessWidget {
       useInheritedMediaQuery: true,
       builder: (context, child) {
         return GetMaterialApp(
-          title: 'Nawras Expense',
+          title: 'Gemini Chat',
           builder: (context, child) {
             return MediaQuery(
               data: MediaQuery.of(context).copyWith(

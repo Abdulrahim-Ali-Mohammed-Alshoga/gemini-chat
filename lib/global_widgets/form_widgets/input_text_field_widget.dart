@@ -51,7 +51,6 @@ class InputTextFieldWidget extends StatefulWidget {
 
   const InputTextFieldWidget({
     super.key,
-
     this.hintText,
     this.max,
     this.cursorColor,
@@ -94,7 +93,7 @@ class InputTextFieldWidget extends StatefulWidget {
     this.suffixIconConstraints,
     this.focusNode,
     this.validator,
-      this.autocorrect=false,
+    this.autocorrect = false,
   });
 
   @override
@@ -102,13 +101,28 @@ class InputTextFieldWidget extends StatefulWidget {
 }
 
 class _InputTextFieldWidgetState extends State<InputTextFieldWidget> {
-  late String text;
   bool isRTL = false;
+  TextDirection _textDirection = TextDirection.ltr;
 
   @override
   void initState() {
+    _updateTextDirection(widget.hintText ?? widget.labelText ?? '');
     super.initState();
-    text = widget.hintText ?? widget.labelText ?? '';
+  }
+
+  void _updateTextDirection(String text) {
+    if (text.isNotEmpty) {
+      // تحديد اتجاه النص بناءً على الحرف الأول
+      if (RegExp(r'^[\u0600-\u06FF]+').hasMatch(text)) {
+        _textDirection = TextDirection.rtl; // نص عربي
+      } else {
+        _textDirection = TextDirection.ltr; // نص إنجليزي
+      }
+    } else {
+      // إذا كان الحقل فارغًا، استخدم الاتجاه الافتراضي
+      _textDirection = TextDirection.ltr;
+    }
+    setState(() {}); // تحديث الحالة
   }
 
   @override
@@ -133,117 +147,124 @@ class _InputTextFieldWidgetState extends State<InputTextFieldWidget> {
         //   ),
         // ),
         FormBuilderTextField(
-            // autovalidateMode:AutovalidateMode.onUserInteraction ,
-            focusNode: widget.focusNode,
-            obscureText: widget.obscureText,
-            autocorrect: widget.autocorrect,
-            textAlign: widget.textAlign ?? TextAlign.start,
-            cursorColor: widget.cursorColor,
-            onTap: widget.onTap,
-            readOnly: widget.readOnly,
-            controller: widget.controller,
-            textInputAction: widget.textInputAction,
-            name: widget.keyName,
-            style: widget.style ??
-                getSemiBoldStyle(color: AppColors.textStyle, fontSize: 14.sp),
-            minLines: widget.minLine,
-            maxLines: widget.maxLines,
-            maxLength: widget.maxLength,
-            enabled: widget.enabled,
-            initialValue: widget.initialValue,
-            autofocus: widget.autoFocus!,
+          // autovalidateMode:AutovalidateMode.onUserInteraction ,
+          focusNode: widget.focusNode,
+          textDirection: _textDirection,
+          obscureText: widget.obscureText,
+          autocorrect: widget.autocorrect,
+          textAlign: widget.textAlign ?? TextAlign.start,
+          cursorColor: widget.cursorColor,
+          onTap: widget.onTap,
+          readOnly: widget.readOnly,
+          controller: widget.controller,
+          textInputAction: widget.textInputAction,
+          name: widget.keyName,
+          style: widget.style ??
+              getSemiBoldStyle(color: AppColors.textStyle, fontSize: 14.sp),
+          minLines: widget.minLine,
+          maxLines: widget.maxLines,
+          maxLength: widget.maxLength,
+          enabled: widget.enabled,
+          initialValue: widget.initialValue,
+          autofocus: widget.autoFocus!,
 
-            // textAlignVertical: TextAlignVertical.bottom,
-            decoration: InputDecoration(
-              labelText: widget.labelText,
-              // label: Row(
-              //   mainAxisSize: MainAxisSize.min,
-              //   children: [
-              //     Container(
-              //       height: 8,
-              //       width: 8,
-              //       color: Get.theme.primaryColor,
-              //       margin: EdgeInsets.symmetric(horizontal: 8.0),
-              //     ),
-              //     Text(widget.labelText ?? ''),
-              //   ],
-              // ),
-              contentPadding: widget.contentPadding ??
-                  EdgeInsets.symmetric(vertical: 13.4.h, horizontal: 9.w),
-              hintText: widget.hintText,
-              alignLabelWithHint: true,
-              fillColor: widget.fillColor,
-              filled: widget.isFill,
-              hintStyle:
-                  widget.hintStyle ?? Theme.of(context).textTheme.bodyLarge,
-              labelStyle:
-                  widget.labelStyle ?? Theme.of(context).textTheme.bodyLarge,
-              suffixIcon: widget.suffixIcon,
-              suffixIconConstraints: widget.suffixIconConstraints,
-              suffix: widget.suffix,
-              prefixIcon: widget.prefixIcon,
-              isDense: true,
+          // textAlignVertical: TextAlignVertical.bottom,
+          decoration: InputDecoration(
+            labelText: widget.labelText,
+            // label: Row(
+            //   mainAxisSize: MainAxisSize.min,
+            //   children: [
+            //     Container(
+            //       height: 8,
+            //       width: 8,
+            //       color: Get.theme.primaryColor,
+            //       margin: EdgeInsets.symmetric(horizontal: 8.0),
+            //     ),
+            //     Text(widget.labelText ?? ''),
+            //   ],
+            // ),
+            contentPadding: widget.contentPadding ??
+                EdgeInsets.symmetric(vertical: 13.4.h, horizontal: 9.w),
+            hintText: widget.hintText,
+            alignLabelWithHint: true,
+            fillColor: widget.fillColor,
+            filled: widget.isFill,
+            hintStyle:
+                widget.hintStyle ?? Theme.of(context).textTheme.bodyLarge,
+            labelStyle:
+                widget.labelStyle ?? Theme.of(context).textTheme.bodyLarge,
+            suffixIcon: widget.suffixIcon,
+            suffixIconConstraints: widget.suffixIconConstraints,
+            suffix: widget.suffix,
+            prefixIcon: widget.prefixIcon,
+            isDense: true,
 
-              focusedBorder: widget.focusedBorder ??
-                  OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(widget.circular.r)),
-                      borderSide: BorderSide.none),
-              enabledBorder: widget.inputBorder ??
-                  OutlineInputBorder(
+            focusedBorder: widget.focusedBorder ??
+                OutlineInputBorder(
                     borderRadius:
                         BorderRadius.all(Radius.circular(widget.circular.r)),
-                    borderSide:   BorderSide.none,
-                    // borderSide: BorderSide.none,
-                  ),
+                    borderSide: BorderSide.none),
+            enabledBorder: widget.inputBorder ??
+                OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(widget.circular.r)),
+                  borderSide: BorderSide.none,
+                  // borderSide: BorderSide.none,
+                ),
 
-              border: widget.border ??
-                  OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(widget.circular.r)),
-                    borderSide:BorderSide.none,
-                    // borderSide: BorderSide.none,
-                  ),
-            ),
-            inputFormatters: widget.inputFormatters ?? getEmailInputFormatter(),
-            onReset: () {
-              setState(() {
-                text = widget.labelText ?? widget.hintText ?? '';
-              });
-            },
-            onSubmitted: widget.onSubmitted,
-            validator: FormBuilderValidators.compose([
-              if (widget.isRequired) FormBuilderValidators.required(),
+            border: widget.border ??
+                OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(widget.circular.r)),
+                  borderSide: BorderSide.none,
+                  // borderSide: BorderSide.none,
+                ),
+          ),
+          inputFormatters: widget.inputFormatters ?? getEmailInputFormatter(),
+          onReset: () {
+            setState(() {
+              // text = widget.labelText ?? widget.hintText ?? '';
+            });
+          },
+          onSubmitted: widget.onSubmitted,
+          validator: FormBuilderValidators.compose([
+            if (widget.isRequired) FormBuilderValidators.required(),
 
-              if (widget.isEmail) FormBuilderValidators.email(),
-              if (widget.isNumeric) FormBuilderValidators.numeric(),
-              if (widget.max != null)
-                FormBuilderValidators.max(widget.max!,
-                    errorText: 'Must be less then ${widget.max! + 1}'),
-              if (widget.isUrl) FormBuilderValidators.url(),
-              if (widget.validator != null) widget.validator!,
+            if (widget.isEmail) FormBuilderValidators.email(),
+            if (widget.isNumeric) FormBuilderValidators.numeric(),
+            if (widget.max != null)
+              FormBuilderValidators.max(widget.max!,
+                  errorText: 'Must be less then ${widget.max! + 1}'),
+            if (widget.isUrl) FormBuilderValidators.url(),
+            if (widget.validator != null) widget.validator!,
 
-              // if (widget.isEqual) (val) {
-              //
-              //   if (val != widget.titleEqual) {
-              //     return 'Not Match Passwords';
-              //   } else {
-              //     return null;
-              //   }
-              // },
-            ]),
-            keyboardType: getKeyboardType(),
-            onChanged: widget.onChanged
-            // (str) {
-            //   if (!mounted) return;
-            //   setState(() {
-            //     text = str!;
-            //   });
-            //   if (widget.onChange != null) {
-            //     widget.onChange!.call(str!);
+            // if (widget.isEqual) (val) {
+            //
+            //   if (val != widget.titleEqual) {
+            //     return 'Not Match Passwords';
+            //   } else {
+            //     return null;
             //   }
             // },
-            ),
+          ]),
+          keyboardType: getKeyboardType(),
+          onChanged: (value) {
+            if (value != null && value.length == 1) {
+              _updateTextDirection(value);
+            }
+
+            widget.onChanged?.call (value);
+          },
+          // (str) {
+          //   if (!mounted) return;
+          //   setState(() {
+          //     text = str!;
+          //   });
+          //   if (widget.onChange != null) {
+          //     widget.onChange!.call(str!);
+          //   }
+          // },
+        ),
       ],
     );
   }
