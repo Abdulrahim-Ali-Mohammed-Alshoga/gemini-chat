@@ -18,17 +18,14 @@ class GeminiCardWidget extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: EdgeInsets.only(top: 5.h),
-            child: Image.asset(
-              AppImages.start,
-              height: 27.h,
-              width: 27.h,
-              fit: BoxFit.fill,
-              color: AppColors.black,
-            ),
+          Image.asset(
+            AppImages.start,
+            height: 27.h,
+            width: 27.h,
+            fit: BoxFit.fill,
+            color: AppColors.black,
           ),
           Expanded(
             child: Container(

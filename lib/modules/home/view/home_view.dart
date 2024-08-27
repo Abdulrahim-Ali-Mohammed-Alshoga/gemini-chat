@@ -34,12 +34,9 @@ class HomeView extends StatelessWidget {
                         color: AppColors.black,
                       ))
                   : ListView.builder(
-
-                      cacheExtent: 9999,
                       itemCount: controller.messages.length,
                       itemBuilder: (context, index) {
                         final message = controller.messages[index];
-
                         return ListTile(
                             key: ValueKey(message),
                             title: message.isUser!
@@ -64,10 +61,29 @@ class HomeView extends StatelessWidget {
                           strokeWidth: 2,
                           color: AppColors.black,
                         ))
-                    : IconButton(
-                        onPressed: () => controller.callGeminiModel(),
-                        icon: const Icon(Icons.send),
-                      ),
+                    : controller.isStart
+                        ? controller.isListening
+                            ?IconButton(
+    onPressed: () => controller.stopListening(),
+    icon: Icon(
+    Icons.mic_none,
+    size: 24.h,
+    ),
+    ):  IconButton(
+                                onPressed: () => controller.startListening(),
+                                icon: Icon(
+                                  Icons.mic,
+                                  size: 24.h,
+                                ),
+                              )
+
+                        : IconButton(
+                            onPressed: () => controller.callGeminiModel(),
+                            icon: Icon(
+                              Icons.send,
+                              size: 20.h,
+                            ),
+                          ),
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
                 hintStyle:
