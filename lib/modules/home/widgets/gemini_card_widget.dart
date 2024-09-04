@@ -4,6 +4,7 @@ import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gemini_chat_app/core/resources/app_colors.dart';
 import 'package:gemini_chat_app/core/resources/app_images.dart';
 import 'package:markdown/markdown.dart' as md;
@@ -28,29 +29,38 @@ class GeminiCardWidget extends StatelessWidget {
             color: AppColors.black,
           ),
           Expanded(
-            child: Container(
+            child: message.isEmpty
+                ? const SizedBox(
+              width: 50,
+              child: SpinKitThreeBounce(
+                color: Colors.red,
+                size: 20.0,
+              ),
+            ): Container(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
               child: MarkdownBody(
                 data: message,
                 selectable: true,
-
                 builders: {
                   'pre': CustomPreBuilder(),
                 },
                 styleSheet: MarkdownStyleSheet(
-    codeblockDecoration:BoxDecoration(color: AppColors.black,borderRadius: BorderRadius.circular(4.r),) ,
-code: TextStyle(
-  backgroundColor: AppColors.black,color: AppColors.white
-),
-
+                  codeblockDecoration: BoxDecoration(
+                    color: AppColors.black,
+                    borderRadius: BorderRadius.circular(4.r),
+                  ),
+                  code: const TextStyle(
+                      backgroundColor: AppColors.black, color: AppColors.white),
+                ),
               ),
-            ), ),
+            ),
           ),
         ],
       ),
     );
   }
 }
+
 class CustomCodeBuilder extends MarkdownElementBuilder {
   @override
   Widget visitText(text, TextStyle? preferredStyle) {
@@ -58,24 +68,20 @@ class CustomCodeBuilder extends MarkdownElementBuilder {
       text.text,
       language: 'dart', // تحديد لغة البرمجة
       theme: githubTheme, // الثيم المستخدم لتلوين الكود
-      padding: EdgeInsets.all(80),
-      textStyle: TextStyle(
-
+      padding: const EdgeInsets.all(80),
+      textStyle: const TextStyle(
         fontSize: 16,
       ),
     );
   }
 }
 
-
-
 class CustomPreBuilder extends MarkdownElementBuilder {
   @override
-  Widget?
-  visitElementAfter(md.Element element, TextStyle? preferredStyle){
-    final code =  element.textContent;
+  Widget? visitElementAfter(md.Element element, TextStyle? preferredStyle) {
+    final code = element.textContent;
 
-    return  Container(
+    return Container(
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(4.0),
@@ -86,8 +92,7 @@ class CustomPreBuilder extends MarkdownElementBuilder {
             padding: const EdgeInsets.all(8.0),
             child: SelectableText(
               code,
-              style: TextStyle(
-
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),
@@ -96,7 +101,7 @@ class CustomPreBuilder extends MarkdownElementBuilder {
             top: 4,
             right: 4,
             child: IconButton(
-              icon: Icon(Icons.copy, color: Colors.white),
+              icon: const Icon(Icons.copy, color: Colors.white),
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: code));
                 // ScaffoldMessenger.of(context).showSnackBar(
@@ -108,5 +113,5 @@ class CustomPreBuilder extends MarkdownElementBuilder {
         ],
       ),
     );
-
-  }}
+  }
+}

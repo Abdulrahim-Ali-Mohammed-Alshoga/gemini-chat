@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gemini_chat_app/core/resources/app_colors.dart';
-import 'package:gemini_chat_app/core/resources/app_images.dart';
 import 'package:gemini_chat_app/core/resources/app_styles.dart';
 import 'package:gemini_chat_app/global_widgets/form_widgets/input_text_field_widget.dart';
-import 'package:gemini_chat_app/modules/home/widgets/gemini_card_widget.dart';
-import 'package:gemini_chat_app/modules/home/widgets/user_card_widget.dart';
 import 'package:get/get.dart';
 
+import '../../../core/resources/app_images.dart';
 import '../controllers/home_controller.dart';
+import '../widgets/gemini_card_widget.dart';
+import '../widgets/user_card_widget.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -40,8 +40,8 @@ class HomeView extends StatelessWidget {
                         return ListTile(
                             key: ValueKey(message),
                             title: message.isUser!
-                                ? UserCardWidget(message: message.text!)
-                                : GeminiCardWidget(message: message.text!));
+                                ? UserCardWidget(message: message.text! )
+                                : GeminiCardWidget(message: message.text.toString()));
                       }),
             ),
             Padding(
@@ -63,20 +63,22 @@ class HomeView extends StatelessWidget {
                         ))
                     : controller.isStart
                         ? controller.isListening
-                            ?IconButton(
-    onPressed: () => controller.stopListening(),
-    icon: Icon(
-    Icons.mic_none,
-    size: 24.h,
-    ),
-    ):  IconButton(
-                                onPressed: () => controller.startListening(),
+                            ? IconButton(
+                                onPressed: () {},
+                                // () => controller.stopListening(),
+                                icon: Icon(
+                                  Icons.mic_none,
+                                  size: 24.h,
+                                ),
+                              )
+                            : IconButton(
+                                onPressed: () {},
+                                // () => controller.startListening(),
                                 icon: Icon(
                                   Icons.mic,
                                   size: 24.h,
                                 ),
                               )
-
                         : IconButton(
                             onPressed: () => controller.callGeminiModel(),
                             icon: Icon(
