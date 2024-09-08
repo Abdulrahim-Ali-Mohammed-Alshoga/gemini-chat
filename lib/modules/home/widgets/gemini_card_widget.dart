@@ -16,47 +16,48 @@ class GeminiCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            AppImages.start,
-            height: 27.h,
-            width: 27.h,
-            fit: BoxFit.fill,
-            color: AppColors.black,
-          ),
-          Expanded(
-            child: message.isEmpty
-                ? const SizedBox(
-              width: 50,
-              child: SpinKitThreeBounce(
-                color: Colors.red,
-                size: 20.0,
-              ),
-            ): Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-              child: MarkdownBody(
-                data: message,
-                selectable: true,
-                builders: {
-                  'pre': CustomPreBuilder(),
-                },
-                styleSheet: MarkdownStyleSheet(
-                  codeblockDecoration: BoxDecoration(
-                    color: AppColors.black,
-                    borderRadius: BorderRadius.circular(4.r),
+    return Row(
+      crossAxisAlignment: message.isEmpty
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
+      children: [
+        Image.asset(
+          AppImages.start,
+          height: 27.h,
+          width: 27.h,
+          fit: BoxFit.fill,
+          color: AppColors.black,
+        ),
+        message.isEmpty
+            ? Padding(
+                padding: EdgeInsets.only(left: 10.w),
+                child: const SpinKitThreeBounce(
+                  color: Colors.red,
+                  size: 20.0,
+                ),
+              )
+            : Expanded(
+                child: Container(
+                  padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
+                  child: MarkdownBody(
+                    data: message,
+                    selectable: true,
+                    builders: {
+                      'pre': CustomPreBuilder(),
+                    },
+                    styleSheet: MarkdownStyleSheet(
+                      codeblockDecoration: BoxDecoration(
+                        color: AppColors.black,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                      code: const TextStyle(
+                          backgroundColor: AppColors.black,
+                          color: AppColors.white),
+                    ),
                   ),
-                  code: const TextStyle(
-                      backgroundColor: AppColors.black, color: AppColors.white),
                 ),
               ),
-            ),
-          ),
-        ],
-      ),
+      ],
     );
   }
 }

@@ -1,13 +1,13 @@
 class MessageModel {
-  String? _text;
+  StringBuffer? _text;
   bool? _isUser;
 
-  MessageModel({String? text, bool? isUser}) {
+  MessageModel({StringBuffer? text, bool? isUser}) {
     _text = text;
     _isUser = isUser;
   }
 
-  String? get text => _text;
+  StringBuffer? get text => _text;
 
   bool? get isUser => _isUser;
 

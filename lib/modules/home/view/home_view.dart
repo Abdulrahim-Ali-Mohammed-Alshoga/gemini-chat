@@ -34,14 +34,17 @@ class HomeView extends StatelessWidget {
                         color: AppColors.black,
                       ))
                   : ListView.builder(
+                controller: controller.scrollController,
                       itemCount: controller.messages.length,
                       itemBuilder: (context, index) {
                         final message = controller.messages[index];
                         return ListTile(
                             key: ValueKey(message),
                             title: message.isUser!
-                                ? UserCardWidget(message: message.text! )
-                                : GeminiCardWidget(message: message.text.toString()));
+                                ? UserCardWidget(
+                                    message: message.text.toString())
+                                : GeminiCardWidget(
+                                    message: message.text.toString()));
                       }),
             ),
             Padding(
